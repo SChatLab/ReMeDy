@@ -94,7 +94,9 @@ for (i in packages){
 Loading a sample data
 
 ``` r
-load("~/ReMeDy Implementation/Data/sample_data.RData") 
+load("~/ReMeDy Implementation/Data/sample_data.RData")
+beta_vals <- data$beta_vals
+metadata <- data$metadata
 ```
 
 ### Snapshot of data
