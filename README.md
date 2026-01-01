@@ -74,6 +74,127 @@ Download the files and point the `manifest.dir` argument to the folder where the
 | Pval_mudisp | Joint p-value for combined mean and variance effects obtained using the Cauchy Combination Test.|
 | adjPval_mudisp | Benjamini–Hochberg adjusted joint p-value for identifying DVMRs.|
 
+## Working Example
+
+### Importing libraries
+
+``` r
+packages <- c('foreach', 'doParallel', 'data.table', 'tidyverse', 'hglm', 'bumphunter', 'ENmix',
+              'readr', 'ClustGeo', 'dendextend', 'dplyr', 'peakRAM', 'tidyr', 'gtools')
+for (i in packages){
+  print(i)
+  print(packageVersion(i))
+  suppressWarnings(
+    suppressPackageStartupMessages(library(i, character.only = TRUE)))
+}
+```
+
+### Loading Example Data
+
+Loading a sample data
+
+``` r
+load("~/ReMeDy Implementation/Data/sample_data.RData") 
+```
+
+### Snapshot of data
+
+A typical DNA methylation beta value data frame looks something
+like below. Note, the CpGs should be in the rows and the samples in
+columns.
+
+``` r
+beta_vals[1:5, 1:5]
+```
+
+    ##              GSM1088602 GSM1088603 GSM1088604 GSM1088605 GSM1088606
+    ##  cg00000029  0.1042731 0.09970492 0.08676946 0.09811605  0.1202126
+    ##  cg00000108  0.9521152 0.94776479 0.94435024 0.95042081  0.9413818
+    ##  cg00000109  0.9071243 0.89921650 0.90713672 0.91270799  0.9044580
+    ##  cg00000165  0.5675178 0.69421567 0.76857651 0.76790992  0.6425491
+    ##  cg00000236  0.8681640 0.85634641 0.88599162 0.86816904  0.8576151
+
+### Identifying co-methylated regions using SACOMA
+
+To obtain co-methylated regions using SACOMA please use the code below.
+
+``` r
+sacoma.regions <- Sacoma(bval.dnam = beta_vals,
+                         data_type = "450k",
+                         manifest.dir = paste(dir, "Data", sep = '/'),
+                         minCpGs = 3,
+                         minCpGs.thres.type = "gr.equal",
+                         maxGap = 200,
+                         rthresold = 0.5, 
+                         method = "spearman",
+                         ncores = 1)
+```
+
+The results table from SACOMA should look something like the following:
+
+``` r
+sacoma.regions[1:5,]
+```
+
+    ##        Probe_ID  CHR     POS bin prediction Region Time.min peak.memory.gb
+    ##    1 cg01537494 chr1 1102276  53      noise      1    0.847      0.2583691
+    ##    2 cg02825344 chr1 1102294  53      noise      1    0.847      0.2583691
+    ##    3 cg02331673 chr1 1102389  53      noise      1    0.847      0.2583691
+    ##    4 cg03003335 chr1 1229351  86      noise      2    0.847      0.2583691
+    ##    5 cg01937247 chr1 1229534  86      noise      2    0.847      0.2583691
+
+Filter the results table by prediction = 'signal' to obtain co-methylated regions and then create a list of these regions, which will be the input for ReMeDy.
+
+``` r
+beta_vals.sub <- beta_vals[sacoma.regions$Probe_ID[sacoma.regions$prediction == 'signal'], ]
+mvals.sub <- ENmix::B2M(beta_vals.sub)
+mvals.sub$CpGs <- rownames(mvals.sub)
+merged <- merge(sacoma.regions, mvals.sub, by.x = 'Probe_ID', by.y = 'CpGs')
+merged <- merged[mixedorder(merged$Region),]
+region_list <- split(merged, merged$Region)
+
+region_list_clean <- lapply(region_list, function(x) {
+  rownames(x) <- x$Probe_ID
+  x <- x[, !(names(x) %in% c("CpGs", "Probe_ID", "CHR", "POS", "bin", "Region", "prediction", "Time.min", "peak.memory.gb"))]
+  return(x)
+})
+
+names(region_list_clean) <- paste0('Region', 1:length(region_list_clean))
+```
+
+### Identifying DMRs, VMRs and DVMRs using ReMeDy
+
+``` r
+fit <- fit.ReMeDy(region_list_clean,
+                  metadata,
+                  expVar = 'Exposure',
+                  coVars = NULL,
+                  rand_effect = "(1 | Sample)",
+                  parallel = TRUE,
+                  verbose = TRUE,
+                  numCores = 1)
+```
+
+After performing analysis you can extract the results table in the following manner
+
+``` r
+results <- fit$res
+```
+
+The results table from ReMeDy should look something like the following
+
+``` r
+results[1:5,]
+```
+
+    ##           cpgs  Region      Pval_mu   adjPval_mu     est_mu     SE_mu Pval_disp adjPval_disp    est_disp   SE_disp  Pval_mudisp adjPval_mudisp
+    ##    1 cg01261194 Region1 8.724734e-08 1.145284e-05 -0.2651702 0.0455216 0.1724971    0.8936299  0.58841011 0.4313149 1.744946e-07   2.290118e-05
+    ##    2 cg01913436 Region1 8.724734e-08 1.145284e-05 -0.2651702 0.0455216 0.1724971    0.8936299  0.58841011 0.4313149 1.744946e-07   2.290118e-05
+    ##    3 cg03748986 Region1 8.724734e-08 1.145284e-05 -0.2651702 0.0455216 0.1724971    0.8936299  0.58841011 0.4313149 1.744946e-07   2.290118e-05
+    ##    4 cg01215682 Region2 1.270749e-05 1.836810e-04 -0.3132433 0.0677032 0.9593214    0.9989061 -0.02213983 0.4340699 2.542288e-05   3.368531e-04
+    ##    5 cg03448635 Region2 1.270749e-05 1.836810e-04 -0.3132433 0.0677032 0.9593214    0.9989061 -0.02213983 0.4340699 2.542288e-05   3.368531e-04
+
+
 ## Analysis Scripts and Data Availability
 
 All R scripts used for the simulation study and real-data analysis in the manuscript are available in this repository at the following locations:
