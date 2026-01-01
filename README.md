@@ -73,3 +73,17 @@ Download the files and point the `manifest.dir` argument to the folder where the
 | SE_disp | Standard error of the estimated variance effect.|
 | Pval_mudisp | Joint p-value for combined mean and variance effects obtained using the Cauchy Combination Test.|
 | adjPval_mudisp | Benjamini–Hochberg adjusted joint p-value for identifying DVMRs.|
+
+## Analysis Scripts and Data Availability
+
+All R scripts used for the simulation study and real-data analysis in the manuscript are available in this repository at the following locations:
+
+- **Simulation analysis scripts:** [Simulations](https://github.com/SChatLab/ReMeDy/tree/main/Simulations)
+- **Real data analysis scripts:** [Real Data Analysis](https://github.com/SChatLab/ReMeDy/tree/main/Real%20Data)
+
+The datasets used in the paper were obtained from GEO under the following accession IDs:
+
+- **450k datasets:** GSE44667 (EOPET dataset), GSE80970 (Alzheimer dataset)
+- **EPIC dataset:** GSE306095 (B-ALL dataset)
+
+After downloading, place the data files in a preferred directory and update the paths inside the analysis scripts accordingly.
