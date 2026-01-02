@@ -32,6 +32,8 @@ install.packages("BiocManager")
 BiocManager::install("bumphunter")
 ```
 
+ReMeDy also depends on the STAAR package, which can be installed following the steps from https://github.com/xihaoli/STAAR.
+
 After installing these packages, ReMeDy can be installed by using devtools.
 
 ``` r
@@ -81,7 +83,7 @@ devtools::install_github("SChatLab/ReMeDy")
 ### Importing libraries
 
 ``` r
-packages <- c('foreach', 'doParallel', 'data.table', 'tidyverse', 'hglm', 'bumphunter', 'ENmix',
+packages <- c('foreach', 'doParallel', 'data.table', 'tidyverse', 'hglm', 'bumphunter', 'ENmix', 'STAAR',
               'readr', 'ClustGeo', 'dendextend', 'dplyr', 'peakRAM', 'tidyr', 'gtools', 'ReMeDy')
 for (i in packages){
   print(i)
@@ -96,7 +98,7 @@ for (i in packages){
 Loading a sample data
 
 ``` r
-load("~/Data/sample_data.RData")
+data(sample_data)
 beta_vals <- data$beta_vals
 metadata <- data$metadata
 ```
