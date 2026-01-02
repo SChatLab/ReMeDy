@@ -82,7 +82,7 @@ devtools::install_github("SChatLab/ReMeDy")
 
 ``` r
 packages <- c('foreach', 'doParallel', 'data.table', 'tidyverse', 'hglm', 'bumphunter', 'ENmix',
-              'readr', 'ClustGeo', 'dendextend', 'dplyr', 'peakRAM', 'tidyr', 'gtools')
+              'readr', 'ClustGeo', 'dendextend', 'dplyr', 'peakRAM', 'tidyr', 'gtools', 'ReMeDy')
 for (i in packages){
   print(i)
   print(packageVersion(i))
@@ -96,7 +96,7 @@ for (i in packages){
 Loading a sample data
 
 ``` r
-load("~/ReMeDy Implementation/Data/sample_data.RData")
+load("~/Data/sample_data.RData")
 beta_vals <- data$beta_vals
 metadata <- data$metadata
 ```
@@ -178,14 +178,14 @@ names(region_list_clean) <- paste0('Region', 1:length(region_list_clean))
 ### Identifying DMRs, VMRs and DVMRs using ReMeDy
 
 ``` r
-fit <- fit.ReMeDy(region_list_clean,
-                  metadata,
-                  expVar = 'Exposure',
-                  coVars = NULL,
-                  rand_effect = "(1 | Sample)",
-                  parallel = TRUE,
-                  verbose = TRUE,
-                  numCores = 1)
+fit <- ReMeDy(region_list = region_list_clean,
+              metadata = metadata,
+              expVar = "Exposure",
+              coVars = NULL,
+              rand_effect = "(1 | Sample)",
+              parallel = FALSE,
+              verbose = FALSE,
+              numCores = 1)
 ```
 
 After performing analysis you can extract the results table in the following manner
