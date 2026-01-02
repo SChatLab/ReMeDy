@@ -22,7 +22,7 @@ For the implementation of ReMeDy, the following R packages are needed to be inst
 For CRAN packages:
 
 ``` r
-install.packages(c("data.table", "foreach", "doParallel", "ClustGeo", "readr", "dplyr", "dendextend", "peakRAM", "hglm"))
+install.packages(c("data.table", "foreach", "doParallel", "ClustGeo", "readr", "dplyr", "dendextend", "peakRAM", "hglm", "tidyr", "pbapply"))
 ```
 
 For Bioconductor packages:
