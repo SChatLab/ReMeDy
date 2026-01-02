@@ -1,0 +1,13 @@
+Package: ReMeDy
+Title: A Flexible Statistical Framework For Region-based Detection of DNA Methylation Dysregulation
+Version: 0.0.0.9000
+Authors@R: c(
+    person("Suvo", "Chatterjee", , "suvchat@iu.edu", role = c("aut", "cre")),
+    person("Siddhant", "Meshram", , "sidmeshr@iu.edu", role = c("aut")),
+    person("Arindam", "Fadikar", , "afadikar@anl.gov", role = c("aut")))
+Description: ReMeDy is a region-based statistical framework that detects differentially methylated regions (DMRs), variably methylated regions (VMRs) and differentially methylated and variably methylated regions (DVMRs).
+Imports: data.table, foreach, doParallel, readr, dplyr, peakRAM, hglm, tidyr, pbapply
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
