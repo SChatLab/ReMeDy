@@ -212,8 +212,8 @@ results[1:5,]
 
 All R scripts used for the simulation study and real-data analysis in the manuscript are available in this repository at the following locations:
 
-- **Simulation analysis scripts:** [Simulations](https://github.com/SChatLab/ReMeDy/tree/main/Simulations)
-- **Real data analysis scripts:** [Real Data Analysis](https://github.com/SChatLab/ReMeDy/tree/main/Real%20Data)
+- **Simulation analysis scripts:** [Simulations](https://github.com/SChatLab/ReMeDy/tree/Manuscript_Materials/Simulations)
+- **Real data analysis scripts:** [Real Data Analysis](https://github.com/SChatLab/ReMeDy/tree/Manuscript_Materials/Real%20Data)
 
 The datasets used in the paper were obtained from GEO under the following accession IDs:
 
