@@ -8,7 +8,14 @@ This repository contains all the R codes for implementing ReMeDy and reproducing
 <img src="ReMeDy%20Pipeline.png" alt="Pipeline" />
 </figure>
 
-## Implementation
+## Installation
+
+For the installation, the R package devtools is needed.
+
+``` r
+install.packages('devtools')
+library(devtools)
+```
 
 For the implementation of ReMeDy, the following R packages are needed to be installed beforehand.
 
@@ -25,16 +32,11 @@ install.packages("BiocManager")
 BiocManager::install("bumphunter")
 ```
 
-The main function used in this workflow can be found: **[ReMeDy Function](https://github.com/SChatLab/ReMeDy/tree/main/ReMeDy%20Implementation)** 
+After installing these packages, ReMeDy can be installed by using devtools.
 
-To get co-methylated regions as input for ReMeDy you need to run SACOMA which can be found at **[SACOMA](https://github.com/SChatLab/SACOMA/tree/main/SACOMA%20Implementation)**.
-Additionally, you will also need array manifest files for the Infinium 450k or EPIC platforms.  
-These can be downloaded from following links:
-
-- **[450k manifest](https://indiana-my.sharepoint.com/:t:/g/personal/suvchat_iu_edu/EUDB4zlBM7NPt6BLLVwiq8sBuT1pdhKPcsWlXuD_-jNc2A?e=UlUx8U)**
-- **[EPIC manifest](https://indiana-my.sharepoint.com/:t:/g/personal/suvchat_iu_edu/EWOBny4uHHpDhef2_0OQcisBxvtm0kHPMBX9zzNK4Y-puQ?e=d4dJGZ)**  
-
-Download the files and point the `manifest.dir` argument to the folder where they are stored when running the function.
+``` r
+devtools::install_github("SChatLab/ReMeDy")
+```
 
 ## Arguments
 
@@ -117,6 +119,15 @@ beta_vals[1:5, 1:5]
     ##  cg00000236  0.8681640 0.85634641 0.88599162 0.86816904  0.8576151
 
 ### Identifying co-methylated regions using SACOMA
+
+To get co-methylated regions as input for ReMeDy you need to run SACOMA which can be found at **[SACOMA](https://github.com/SChatLab/SACOMA/tree/main/SACOMA%20Implementation)**.
+Additionally, you will also need array manifest files for the Infinium 450k or EPIC platforms.  
+These can be downloaded from following links:
+
+- **[450k manifest](https://indiana-my.sharepoint.com/:t:/g/personal/suvchat_iu_edu/EUDB4zlBM7NPt6BLLVwiq8sBuT1pdhKPcsWlXuD_-jNc2A?e=UlUx8U)**
+- **[EPIC manifest](https://indiana-my.sharepoint.com/:t:/g/personal/suvchat_iu_edu/EWOBny4uHHpDhef2_0OQcisBxvtm0kHPMBX9zzNK4Y-puQ?e=d4dJGZ)**  
+
+Download the files and point the `manifest.dir` argument to the folder where they are stored when running the function.
 
 To obtain co-methylated regions using SACOMA please use the code below.
 
