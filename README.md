@@ -57,7 +57,7 @@ devtools::install_github("SChatLab/ReMeDy")
 
 ## Values
 
-`ReMeDy` outputs has 12 value arguments.
+`ReMeDy` output has 12 value arguments.
 
 ### The table below details the values returned by Sacoma:
 
