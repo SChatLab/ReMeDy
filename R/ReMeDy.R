@@ -5,7 +5,7 @@
 #' @param region_list A list of co-methylated regions of methylation levels with CpGs in the row and samples in the column.
 #' @param metadata A dataframe with information on the samples such as disease status, gender and etc.
 #' @param expVar The name of the variable on which the differential methylation, variable methylation or both will be evaluated. If the user provides no name then the metadata should have a column named as exposure which should have information on things such as disease status, treatment conditions or etc. ‘Exposure’ by default.
-#' @param coVars 	The names of the covariates/confounders that needs to adjusted for in the DNA methylation analysis. 'NULL' by default
+#' @param coVars The names of the covariates/confounders that needs to adjusted for in the DNA methylation analysis. 'NULL' by default
 #' @param rand_effect This parameter specifies the random-effects structure of the model.
 #' @param parallel If true, the analysis will be performed on multiple cores with faster runtimes.'FALSE' by default
 #' @param verbose If true, it will print the progress report. 'FALSE' by default
