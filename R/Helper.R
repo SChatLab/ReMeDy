@@ -50,16 +50,33 @@ perRegion.mod <- function(reg, metadata, Region, expVar, coVars, rand_effect){
 
   #### Collecting Outputs ####
 
+  expPattern <- paste0("^", expVar)
+  
   if(!(is.null(fit) | is.null(fit$SeFe))){
     summary_fit <- summary(fit)
-    mu_pval <- summary_fit$FixCoefMat[2,4]
+    mu_rows <- grep(expPattern, rownames(summary_fit$FixCoefMat))
+    mu_pval <- if(length(mu_rows) == 1){
+      summary_fit$FixCoefMat[mu_rows, 'Pr(>|t|)']
+    }else{
+      NA
+    }
     if(!is.null(fit$SummVC1)){
-      disp_pval <- 2 * pnorm(-abs(summary_fit$SummVC1[2,1]/summary_fit$SummVC1[2,2]))
-      if(mu_pval == 1){mu_pval = 0.9999}
-      if(disp_pval == 1){disp_pval = 0.9999}
-      if(mu_pval == 0){mu_pval = 0.0001}
-      if(disp_pval == 0){disp_pval = 0.0001}
-      mudisp_pval <- STAAR::CCT(c(mu_pval, disp_pval))
+      disp_rows <- grep(expPattern, rownames(summary_fit$SummVC1))
+      if(length(disp_rows) == 1){
+        z_disp <- summary_fit$SummVC1[disp_rows, 'Estimate']/summary_fit$SummVC1[disp_rows, 'Std. Error']
+        disp_pval <- 2 * pnorm(-abs(z_disp))
+      }else{
+        disp_pval <- NA
+      }
+      if(!is.na(mu_pval) && !is.na(disp_pval)){
+        if(mu_pval == 1) mu_pval <- 0.9999
+        if(disp_pval == 1) disp_pval <- 0.9999
+        if(mu_pval == 0) mu_pval <- 0.0001
+        if(disp_pval == 0) disp_pval <- 0.0001
+        mudisp_pval <- STAAR::CCT(c(mu_pval, disp_pval))
+      }else{
+        mudisp_pval <- NA
+      }
     }else{
       disp_pval <- NA
       mudisp_pval <- NA
@@ -71,8 +88,6 @@ perRegion.mod <- function(reg, metadata, Region, expVar, coVars, rand_effect){
   }
 
   #### Effect sizes (log2FC) + SEs for mean and dispersion ####
-
-  expPattern <- paste0("^", expVar)
 
   ## Mean model
   if(!is.null(fit) && !is.null(fit$fixef) && !is.null(fit$SeFe)){
