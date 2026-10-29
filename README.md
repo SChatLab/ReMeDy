@@ -223,3 +223,7 @@ The datasets used in the paper were obtained from GEO under the following access
 - **EPIC dataset:** GSE306095 (B-ALL dataset)
 
 After downloading, place the data files in a preferred directory and update the paths inside the analysis scripts accordingly.
+
+## Citation
+
+S. Chatterjee, S. Meshram, G. Arunkumar, F. Tekola-Ayele, and A. Fadikar, “ ReMeDy: A Flexible Statistical Framework for Region-Based Detection of DNA Methylation Dysregulation,” Statistics in Medicine 45, no. 20-22 (2026): e70716, https://doi.org/10.1002/sim.70716.
